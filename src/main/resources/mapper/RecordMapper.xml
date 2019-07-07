@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.power.dao.RecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.imooc.power.entity.Record">
+        <id column="record_id" property="recordId" />
+        <result column="record_time" property="recordTime" />
+        <result column="location_factory_numb" property="locationFactoryNumb" />
+        <result column="meter_numb" property="meterNumb" />
+        <result column="v_ab" property="vAb" />
+        <result column="v_bc" property="vBc" />
+        <result column="v_ca" property="vCa" />
+        <result column="v_ave" property="vAve" />
+        <result column="a_a" property="aA" />
+        <result column="a_b" property="aB" />
+        <result column="a_c" property="aC" />
+        <result column="a_ave" property="aAve" />
+        <result column="kwh" property="kwh" />
+        <result column="app_kwh" property="appKwh" />
+        <result column="kw" property="kw" />
+        <result column="temp_a" property="tempA" />
+        <result column="temp_b" property="tempB" />
+        <result column="temp_c" property="tempC" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        record_id AS recordId, record_time AS recordTime, location_factory_numb AS locationFactoryNumb, meter_numb AS meterNumb, v_ab AS vAb, v_bc AS vBc, v_ca AS vCa, v_ave AS vAve, a_a AS aA, a_b AS aB, a_c AS aC, a_ave AS aAve, kwh, app_kwh AS appKwh, kw, temp_a AS tempA, temp_b AS tempB, temp_c AS tempC
+    </sql>
+
+    <select id="selectEnergyDTOList" resultType="com.imooc.power.dto.EnergyDTO">
+        SELECT
+            DATE_FORMAT(record_time,'%Y-%m') AS date,
+            meter_numb AS meterNumb,
+            IFNULL(MAX(kwh),0) AS max,
+            IFNULL(MIN(kwh),0) AS min
+        from record
+        <where>
+            1 = 1
+            <if test="dateList != null and dateList.size() != 0">
+                AND DATE_FORMAT(record_time,'%Y-%m') IN
+                <foreach collection="dateList" open="(" close=")" separator="," index="index" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="locationFactoryNumb != null">
+                AND location_factory_numb = #{locationFactoryNumb}
+            </if>
+            <if test="meterNumbs != null and meterNumbs.size() != 0">
+                AND meter_numb IN
+                <foreach collection="meterNumbs" open="(" close=")" separator="," index="index" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(record_time,'%Y-%m'), meter_numb
+        ORDER BY record_time;
+    </select>
+
+</mapper>

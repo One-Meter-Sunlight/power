@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.power.dao.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.imooc.power.entity.User">
+        <id column="id" property="id"/>
+        <result column="account_id" property="accountId"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email" />
+        <result column="server" property="server" />
+        <result column="created" property="created"/>
+    </resultMap>
+
+    <sql id="column">
+        id, account_id, name, password, email, server, created
+    </sql>
+
+    <!-- 通过账号ID查询用户信息 -->
+    <select id="selectOneByAccountId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="column"/>
+        from user
+        where account_id = #{accountId}
+        limit 1;
+    </select>
+
+    <!-- 查询账户信息列表 -->
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="column"/>
+        from user
+    </select>
+
+</mapper>

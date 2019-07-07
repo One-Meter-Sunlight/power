@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.power.dao.MeterMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.imooc.power.entity.Meter">
+        <id column="meter_numb" property="meterNumb" />
+        <result column="meter_model" property="meterModel" />
+        <result column="meter_add" property="meterAdd" />
+        <result column="serial_numb" property="serialNumb" />
+        <result column="location_factory_numb" property="locationFactoryNumb" />
+        <result column="meter_desc" property="meterDesc" />
+        <result column="be_test_vol" property="beTestVol" />
+        <result column="be_test_cur" property="beTestCur" />
+        <result column="reset_kw_date" property="resetKwDate" />
+        <result column="switch_cur" property="switchCur" />
+        <result column="instru_trans_ct" property="instruTransCt" />
+        <result column="location_carbinet_numb" property="locationCarbinetNumb" />
+        <result column="location_carbinet_column" property="locationCarbinetColumn" />
+        <result column="floor" property="floor" />
+        <result column="vol_warn_value" property="volWarnValue" />
+        <result column="cur_warn_value" property="curWarnValue" />
+        <result column="tmp_warn_value" property="tmpWarnValue" />
+        <result column="meter_other_param" property="meterOtherParam" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        meter_numb AS meterNumb, meter_model AS meterModel, meter_add AS meterAdd, serial_numb AS serialNumb, location_factory_numb AS locationFactoryNumb, meter_desc AS meterDesc, be_test_vol AS beTestVol, be_test_cur AS beTestCur, reset_kw_date AS resetKwDate, switch_cur AS switchCur, instru_trans_ct AS instruTransCt, location_carbinet_numb AS locationCarbinetNumb, location_carbinet_column AS locationCarbinetColumn, floor, vol_warn_value AS volWarnValue, cur_warn_value AS curWarnValue, tmp_warn_value AS tmpWarnValue, meter_other_param AS meterOtherParam
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="colum">
+        meter_numb, meter_model, meter_add, serial_numb, location_factory_numb, meter_desc, be_test_vol, be_test_cur, reset_kw_date, switch_cur, instru_trans_ct, location_carbinet_numb, location_carbinet_column, floor, vol_warn_value, cur_warn_value, tmp_warn_value, meter_other_param
+    </sql>
+
+    <!-- 通过工厂编号查询工厂仪表列表 -->
+    <select id="selectListByFactoryNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="colum"/>
+        from meter
+        <where>
+            location_factory_numb = #{locationFactoryNumb}
+        </where>
+    </select>
+
+</mapper>
