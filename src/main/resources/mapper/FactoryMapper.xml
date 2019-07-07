@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.power.dao.FactoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.imooc.power.entity.Factory">
+        <id column="factory_numb" property="factoryNumb"/>
+        <result column="factory_desc" property="factoryDesc"/>
+    </resultMap>
+
+    <resultMap id="FactoryMetersVOMap" type="com.imooc.power.vo.FactoryMetersVO">
+        <id column="factory_numb" property="factoryNumb"></id>
+        <result column="factory_desc" property="factoryDesc"></result>
+        <collection property="meterVOList" ofType="com.imooc.power.vo.MeterVO" javaType="java.util.List" >
+            <id column="meter_numb" property="meterNumb"></id>
+            <result column="meter_desc" property="meterDesc"></result>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        factory_numb, factory_desc
+    </sql>
+
+    <!-- 查询工厂列表 -->
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from factory
+    </select>
+
+    <!-- 查询所有工厂以及工厂下的电表 -->
+    <select id="selectFactoryMetersVOList" resultMap="FactoryMetersVOMap">
+        SELECT
+            factory.factory_numb,
+            factory.factory_desc,
+            meter.meter_numb,
+            meter.meter_desc
+        from
+            factory LEFT JOIN meter ON factory.factory_numb = meter.location_factory_numb
+    </select>
+
+</mapper>
