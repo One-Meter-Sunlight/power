@@ -30,7 +30,7 @@ public class PageInfo {
     /**
      * 每页条数
      */
-    private int size;
+    private int size = 20;
 
     /**
      * 数据
