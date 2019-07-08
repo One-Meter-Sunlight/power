@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -171,10 +172,6 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         String query_date_pre_month = DateUtils.format(preDate, DateUtils.DATE_PATTERN_YYYY_MM);
         String query_date_pre2_month = DateUtils.format(pre2Date, DateUtils.DATE_PATTERN_YYYY_MM);
 
-        // 上月时间和上上月月份字符串
-        String preDateStr;
-        String pre2DateStr;
-
         if (StringUtils.isNoneBlank(command.getDate())) {
             try {
                 Date selectDate = DateUtils.passDate(command.getDate(), DateUtils.DATE_PATTERN_YYYY_MM);
@@ -192,21 +189,24 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
             }
         }
 
-        // 所有仪表能耗记录
-        /*List<EnergyDTO> energyDTOList = recordMapper.selectEnergyDTOList(Lists.newArrayList(currentDate, preDate),
-                command.getLocationFactoryNumb(), command.getMeterNumbs());
-
+        // 分页查询
         Page<RecordStatisticsVO> page = new Page<>(command.getCurrent(), command.getSize());
-        RecordStatisticsVO record = BeanUtil.copyProperties(command, RecordStatisticsVO.class);
-        EntityWrapper<RecordStatisticsVO> eWrapper = new EntityWrapper<>(record);*/
+        Map<String, Object> condition = new HashMap<String, Object>();
+        if (StringUtils.isNotBlank(command.getLocationFactoryNumb())) {
+            condition.put("locationFactoryNumb", command.getLocationFactoryNumb());
+        }
+        if (null != command.getMeterNumbs() && command.getMeterNumbs().size() > 0) {
+            condition.put("meterNumbs", command.getMeterNumbs());
+        }
+        condition.put("query_date_current_month", query_date_current_month);
+        condition.put("query_date_pre_month", query_date_pre_month);
+        condition.put("query_date_pre2_month", query_date_pre2_month);
 
-        //Page<RecordStatisticsVO> pageList = selectPage(page, eWrapper);
+        List<RecordStatisticsVO> recordStatisticsVOList = recordMapper.selectRecordStatisticsList(page, condition);
+        page.setRecords(recordStatisticsVOList);
 
         log.info(">>>>>> 分页查询报警信息总耗时：[{}]ms", System.currentTimeMillis() - startTime);
-
-        //return selectPage(page, eWrapper);
-
-        return null;
+        return page;
     }
 
 }

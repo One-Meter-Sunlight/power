@@ -54,4 +54,29 @@
         ORDER BY record_time;
     </select>
 
+    <!-- 仪表能耗分页统计 -->
+    <select id="selectRecordStatisticsList" parameterType="java.util.Map" resultType="com.imooc.power.vo.RecordStatisticsVO">
+        SELECT
+            t.meterNumb as meterNumb,
+            t2.meter_desc as meterDesc,
+            CASE t.date when '2017-12' THEN IFNULL(t.max,0) - IFNULL(t.min,0) ELSE 0 END 'currentKwh',
+            CASE t.date when '2017-11' THEN (IFNULL(t.max,0) - IFNULL(t.min,0)) ELSE 0 END 'preMonthKwh',
+            CASE t.date when '2017-10' THEN (IFNULL(t.max,0) - IFNULL(t.min,0)) ELSE 0 END 'pre2MonthKwh'
+        from (
+             SELECT
+                 DATE_FORMAT(record_time,'%Y-%m') AS date,
+                 meter_numb AS meterNumb,
+                 IFNULL(MAX(kwh),0) AS max,
+                 IFNULL(MIN(kwh),0) AS min
+             from record
+             where
+                 DATE_FORMAT(record_time,'%Y-%m') IN ('2017-12','2017-11','2017-10')
+
+               AND location_factory_numb = 'AB'
+             GROUP BY DATE_FORMAT(record_time,'%Y-%m'), meter_numb
+             ORDER BY record_time
+             )t INNER JOIN meter t2 ON t.meterNumb = t2.meter_numb
+        GROUP BY t.meterNumb , t2.meter_desc
+    </select>
+
 </mapper>
