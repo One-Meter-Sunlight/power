@@ -59,9 +59,9 @@
         SELECT
             t.meterNumb as meterNumb,
             t2.meter_desc as meterDesc,
-            CASE t.date when '2017-12' THEN IFNULL(t.max,0) - IFNULL(t.min,0) ELSE 0 END 'currentKwh',
-            CASE t.date when '2017-11' THEN (IFNULL(t.max,0) - IFNULL(t.min,0)) ELSE 0 END 'preMonthKwh',
-            CASE t.date when '2017-10' THEN (IFNULL(t.max,0) - IFNULL(t.min,0)) ELSE 0 END 'pre2MonthKwh'
+            CASE t.date when #{query_date_current_month} THEN IFNULL(t.max,0) - IFNULL(t.min,0) ELSE 0 END 'currentKwh',
+            CASE t.date when #{query_date_pre_month} THEN (IFNULL(t.max,0) - IFNULL(t.min,0)) ELSE 0 END 'preMonthKwh',
+            CASE t.date when #{query_date_pre2_month} THEN (IFNULL(t.max,0) - IFNULL(t.min,0)) ELSE 0 END 'pre2MonthKwh'
         from (
              SELECT
                  DATE_FORMAT(record_time,'%Y-%m') AS date,
@@ -70,9 +70,16 @@
                  IFNULL(MIN(kwh),0) AS min
              from record
              where
-                 DATE_FORMAT(record_time,'%Y-%m') IN ('2017-12','2017-11','2017-10')
-
-               AND location_factory_numb = 'AB'
+                 DATE_FORMAT(record_time,'%Y-%m') IN (#{query_date_current_month},#{query_date_pre_month},#{query_date_pre2_month})
+               <if test="null != locationFactoryNumb">
+                   AND location_factory_numb = #{locationFactoryNumb}
+               </if>
+               <if test="null != meterNumbs and meterNumbs.size() > 0">
+                       AND meter_numb IN
+                   <foreach collection="meterNumbs" index="index" item="item" separator="," open="(" close=")">
+                       #{item}
+                   </foreach>
+               </if>
              GROUP BY DATE_FORMAT(record_time,'%Y-%m'), meter_numb
              ORDER BY record_time
              )t INNER JOIN meter t2 ON t.meterNumb = t2.meter_numb
