@@ -1,6 +1,5 @@
 package com.imooc.power.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
@@ -9,7 +8,6 @@ import com.imooc.power.dao.RecordMapper;
 import com.imooc.power.dto.EnergyDTO;
 import com.imooc.power.entity.Record;
 import com.imooc.power.service.IRecordService;
-import com.imooc.power.util.BeanUtil;
 import com.imooc.power.util.DateUtils;
 import com.imooc.power.vo.EnergyStatisticsVO;
 import com.imooc.power.vo.RecordStatisticsVO;
@@ -85,6 +83,9 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
 
                 Date date2 = DateUtils.addMonth(selectDate, -2);
                 pre2DateStr = DateUtils.format(date2, DateUtils.DATE_PATTERN_MM);
+
+                query_date_current_month = command.getDate();
+                query_date_pre_month = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM);
             } catch (Exception e) {
                 log.error("时间转换异常：" + e.getMessage());
                 throw new RuntimeException("系统异常");
@@ -130,24 +131,26 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
             // 当月所有仪表能耗集合
             List<EnergyDTO> currentList = energyMap.get(currentDate);
             // 上月所有仪表能耗集合
-            List<EnergyDTO> preList = energyMap.get(currentDate);
+            List<EnergyDTO> preList = energyMap.get(preDate);
+
+            long energy = 0;
             if (null != currentList && currentList.size() > 0) {
-                long energy = 0;
                 for (int i = 0, len = currentList.size(); i < len; i++) {
                     EnergyDTO dto = currentList.get(i);
                     energy += dto.getMax() - dto.getMin();
                 }
-                vo.setCurrentIdStr(energy + "kwh");
             }
+            vo.setCurrentMonthTotalKwhStr(energy + "kwh");
 
+            long preEnergy = 0;
             if (null != preList && preList.size() > 0) {
-                long energy = 0;
+
                 for (int i = 0, len = preList.size(); i < len; i++) {
                     EnergyDTO dto = currentList.get(i);
-                    energy += dto.getMax() - dto.getMin();
+                    preEnergy += dto.getMax() - dto.getMin();
                 }
-                vo.setCurrentIdStr(energy + "kwh");
             }
+            vo.setPreMonthTotalKwhStr(preEnergy + "kwh");
         }
     }
 
@@ -190,18 +193,20 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         }
 
         // 所有仪表能耗记录
-        List<EnergyDTO> energyDTOList = recordMapper.selectEnergyDTOList(Lists.newArrayList(currentDate, preDate),
+        /*List<EnergyDTO> energyDTOList = recordMapper.selectEnergyDTOList(Lists.newArrayList(currentDate, preDate),
                 command.getLocationFactoryNumb(), command.getMeterNumbs());
 
         Page<RecordStatisticsVO> page = new Page<>(command.getCurrent(), command.getSize());
         RecordStatisticsVO record = BeanUtil.copyProperties(command, RecordStatisticsVO.class);
-        EntityWrapper<RecordStatisticsVO> eWrapper = new EntityWrapper<>(record);
+        EntityWrapper<RecordStatisticsVO> eWrapper = new EntityWrapper<>(record);*/
 
-        Page<RecordStatisticsVO> pageList = selectPage(page, eWrapper);
+        //Page<RecordStatisticsVO> pageList = selectPage(page, eWrapper);
 
         log.info(">>>>>> 分页查询报警信息总耗时：[{}]ms", System.currentTimeMillis() - startTime);
 
-        return selectPage(page, eWrapper);
+        //return selectPage(page, eWrapper);
+
+        return null;
     }
 
 }

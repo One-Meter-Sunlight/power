@@ -29,5 +29,5 @@ public class EnergyStatisticsVO implements Serializable {
     /**
      * 上月电表总能耗
      */
-    private String lastMonthTotalKwhStr;
+    private String preMonthTotalKwhStr;
 }

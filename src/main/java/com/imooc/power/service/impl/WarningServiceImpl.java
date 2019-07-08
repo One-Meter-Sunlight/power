@@ -7,7 +7,6 @@ import com.imooc.power.command.WarningCommand;
 import com.imooc.power.dao.WarningMapper;
 import com.imooc.power.entity.Warning;
 import com.imooc.power.service.IWarningService;
-import com.imooc.power.util.BeanUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +36,14 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
         long startTime = System.currentTimeMillis();
 
         Page<Warning> page = new Page<>(command.getCurrent(), command.getSize());
-        Warning warning = BeanUtil.copyProperties(command, Warning.class);
-        EntityWrapper<Warning> eWrapper = new EntityWrapper<>(warning);
+        EntityWrapper<Warning> eWrapper = new EntityWrapper<>();
+        if (null != command.getMeterNumbs() && command.getMeterNumbs().size() > 0) {
+            eWrapper.in("meter_numb", command.getMeterNumbs());
+        }
         if (StringUtils.isNoneBlank(command.getDate())) {
             eWrapper.eq("DATE_FORMAT(record_time, '%Y-%m-%d')", command.getDate());
         }
+        eWrapper.orderBy("record_time", false);
 
         log.info(">>>>>> 分页查询报警信息总耗时：[{}]ms", System.currentTimeMillis() - startTime);
 

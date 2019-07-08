@@ -3,6 +3,8 @@ package com.imooc.power.command;
 import com.imooc.power.base.PageInfo;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 报警记录请求参数
  *
@@ -15,6 +17,6 @@ public class WarningCommand extends PageInfo {
 
     private String date;
     private String locationFactoryNumb;
-    private String meterNumb;
+    private List<String> meterNumbs;
 
 }
