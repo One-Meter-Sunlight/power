@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,13 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         return pageList;
     }
 
+    /**
+     * 近两个月总能耗统计
+     *
+     * @param command 请求参数
+     * @return
+     * @throws ParseException
+     */
     @Override
     public EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws RuntimeException {
         EnergyStatisticsVO vo = new EnergyStatisticsVO();
@@ -69,10 +77,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         // 获得表格标题并统计当月和上月总能耗
         getTableTitleAndCalcTotalEnergy(command, vo);
 
-        //
-
-
-        return null;
+        return vo;
     }
 
     /**
