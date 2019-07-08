@@ -24,11 +24,7 @@
         <result column="temp_c" property="tempC" />
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        record_id AS recordId, record_time AS recordTime, location_factory_numb AS locationFactoryNumb, meter_numb AS meterNumb, v_ab AS vAb, v_bc AS vBc, v_ca AS vCa, v_ave AS vAve, a_a AS aA, a_b AS aB, a_c AS aC, a_ave AS aAve, kwh, app_kwh AS appKwh, kw, temp_a AS tempA, temp_b AS tempB, temp_c AS tempC
-    </sql>
-
+    <!-- 分组查询所有仪表能耗记录 -->
     <select id="selectEnergyDTOList" resultType="com.imooc.power.dto.EnergyDTO">
         SELECT
             DATE_FORMAT(record_time,'%Y-%m') AS date,

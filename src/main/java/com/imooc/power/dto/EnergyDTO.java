@@ -12,6 +12,6 @@ public class EnergyDTO {
 
     private String date;
     private String meterNumb;
-    private long max;
-    private long min;
+    private Long max;
+    private Long min;
 }

@@ -38,7 +38,7 @@ public class RecordController {
      */
     @UserLoginToken
     @RequestMapping(value = "/totalEnergyStatistics", method = RequestMethod.POST)
-    @ApiOperation(value = "总能耗统计", notes = "总能耗统计")
+    @ApiOperation(value = "总能耗统计", notes = "近两个月总能耗统计")
     @ApiResponse(response = Page.class, code = 200, message = "接口返回对象参数")
     EnergyStatisticsVO totalEnergyStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) EnergyStatisticsCommand command) throws ParseException {
         return recordService.getTotalEnergyStatistics(command);

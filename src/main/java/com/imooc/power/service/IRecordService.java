@@ -27,13 +27,12 @@ public interface IRecordService extends IService<Record> {
     Page<Record> getPageList(RecordCommand command);
 
     /**
-     * 能耗统计
+     * 近两个月总能耗统计
      *
-     * @param command 能耗统计请求参数
+     * @param command 请求参数
      * @return
+     * @throws ParseException
      */
-    Object getEnergyStatisticsPageList(EnergyStatisticsCommand command);
-
     EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws ParseException;
 
     Page<RecordStatisticsVO> getPageRecordStatistics(EnergyStatisticsCommand command);
