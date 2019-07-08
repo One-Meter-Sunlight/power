@@ -41,7 +41,7 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
             return page;
         }
 
-        eWrapper.eq("locationFactoryNumb", command.getLocationFactoryNumb());
+        eWrapper.eq("location_factory_numb", command.getLocationFactoryNumb());
 
         if (null != command.getMeterNumbs() && command.getMeterNumbs().size() > 0) {
             eWrapper.in("meter_numb", command.getMeterNumbs());
