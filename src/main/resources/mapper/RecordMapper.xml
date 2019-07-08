@@ -75,7 +75,7 @@
                    AND location_factory_numb = #{locationFactoryNumb}
                </if>
                <if test="null != meterNumbs and meterNumbs.size() > 0">
-                       AND meter_numb IN
+                   AND meter_numb IN
                    <foreach collection="meterNumbs" index="index" item="item" separator="," open="(" close=")">
                        #{item}
                    </foreach>
