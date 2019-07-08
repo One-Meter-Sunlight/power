@@ -19,14 +19,6 @@ import java.text.ParseException;
 public interface IRecordService extends IService<Record> {
 
     /**
-     * 分页查询电压电流记录列表
-     *
-     * @param command
-     * @return
-     */
-    Page<Record> getPageList(RecordCommand command);
-
-    /**
      * 近两个月总能耗统计
      *
      * @param command 请求参数
@@ -35,5 +27,11 @@ public interface IRecordService extends IService<Record> {
      */
     EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws ParseException;
 
+    /**
+     * 仪表能耗分页统计
+     *
+     * @param command 请求参数
+     * @return
+     */
     Page<RecordStatisticsVO> getPageRecordStatistics(EnergyStatisticsCommand command);
 }

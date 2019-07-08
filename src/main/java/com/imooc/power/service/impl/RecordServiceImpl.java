@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.imooc.power.command.EnergyStatisticsCommand;
-import com.imooc.power.command.RecordCommand;
 import com.imooc.power.dao.RecordMapper;
 import com.imooc.power.dto.EnergyDTO;
 import com.imooc.power.entity.Record;
@@ -43,27 +42,6 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     private RecordMapper recordMapper;
 
     /**
-     * 分页查询电压电流记录列表
-     *
-     * @param command 请求参数
-     * @return
-     */
-    @Override
-    public Page<Record> getPageList(RecordCommand command) {
-        Page<Record> page = new Page<>(command.getCurrent(), command.getSize());
-        Record record = BeanUtil.copyProperties(command, Record.class);
-        EntityWrapper<Record> eWrapper = new EntityWrapper<>(record);
-        if (null != command.getRecordTimeBegin()) {
-            eWrapper.ge("record_time", command.getRecordTimeBegin());
-        }
-        if (null != command.getRecordTimeEnd()) {
-            eWrapper.le("record_time", command.getRecordTimeEnd());
-        }
-        Page<Record> pageList = selectPage(page, eWrapper);
-        return pageList;
-    }
-
-    /**
      * 近两个月总能耗统计
      *
      * @param command 请求参数
@@ -77,14 +55,15 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         // 获得表格标题并统计当月和上月总能耗
         getTableTitleAndCalcTotalEnergy(command, vo);
 
+        // 返回对象
         return vo;
     }
 
     /**
-     * 获得表格标题
+     * 获得表格标题并统计当月和上月总能耗
      *
-     * @param command
-     * @param vo
+     * @param command 请求参数
+     * @param vo      返回对象
      */
     private void getTableTitleAndCalcTotalEnergy(EnergyStatisticsCommand command, EnergyStatisticsVO vo) {
         // 查询条件
@@ -170,13 +149,59 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
                 vo.setCurrentIdStr(energy + "kwh");
             }
         }
-
-
     }
 
+    /**
+     * 仪表能耗分页统计
+     *
+     * @param command 请求参数
+     * @return
+     */
     @Override
     public Page<RecordStatisticsVO> getPageRecordStatistics(EnergyStatisticsCommand command) {
-        return null;
+        long startTime = System.currentTimeMillis();
+
+        // 查询条件
+        Date preDate = DateUtils.addMonth(-1);
+        Date pre2Date = DateUtils.addMonth(-2);
+        String query_date_current_month = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM);
+        String query_date_pre_month = DateUtils.format(preDate, DateUtils.DATE_PATTERN_YYYY_MM);
+        String query_date_pre2_month = DateUtils.format(pre2Date, DateUtils.DATE_PATTERN_YYYY_MM);
+
+        // 上月时间和上上月月份字符串
+        String preDateStr;
+        String pre2DateStr;
+
+        if (StringUtils.isNoneBlank(command.getDate())) {
+            try {
+                Date selectDate = DateUtils.passDate(command.getDate(), DateUtils.DATE_PATTERN_YYYY_MM);
+                query_date_current_month = command.getDate();
+
+                // 上月时间和上上月时间
+                Date date = DateUtils.addMonth(selectDate, -1);
+                query_date_pre_month = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM);
+
+                Date date2 = DateUtils.addMonth(selectDate, -2);
+                query_date_pre2_month = DateUtils.format(date2, DateUtils.DATE_PATTERN_YYYY_MM);
+            } catch (Exception e) {
+                log.error("时间转换异常：" + e.getMessage());
+                throw new RuntimeException("系统异常");
+            }
+        }
+
+        // 所有仪表能耗记录
+        List<EnergyDTO> energyDTOList = recordMapper.selectEnergyDTOList(Lists.newArrayList(currentDate, preDate),
+                command.getLocationFactoryNumb(), command.getMeterNumbs());
+
+        Page<RecordStatisticsVO> page = new Page<>(command.getCurrent(), command.getSize());
+        RecordStatisticsVO record = BeanUtil.copyProperties(command, RecordStatisticsVO.class);
+        EntityWrapper<RecordStatisticsVO> eWrapper = new EntityWrapper<>(record);
+
+        Page<RecordStatisticsVO> pageList = selectPage(page, eWrapper);
+
+        log.info(">>>>>> 分页查询报警信息总耗时：[{}]ms", System.currentTimeMillis() - startTime);
+
+        return selectPage(page, eWrapper);
     }
 
 }
