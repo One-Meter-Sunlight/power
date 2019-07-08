@@ -126,6 +126,8 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         // 所有仪表能耗记录
         List<EnergyDTO> energyDTOList = recordMapper.selectEnergyDTOList(Lists.newArrayList(currentDate, preDate),
                 command.getLocationFactoryNumb(), command.getMeterNumbs());
+        long energy = 0;
+        long preEnergy = 0;
         if (null != energyDTOList && energyDTOList.size() > 0) {
             // 将数据转换成Map结构数据，Key = 年月， value为仪表能耗集合
             Map<String, List<EnergyDTO>> energyMap = energyDTOList.stream().collect(Collectors.groupingBy(EnergyDTO::getDate));
@@ -134,25 +136,23 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
             // 上月所有仪表能耗集合
             List<EnergyDTO> preList = energyMap.get(preDate);
 
-            long energy = 0;
             if (null != currentList && currentList.size() > 0) {
                 for (int i = 0, len = currentList.size(); i < len; i++) {
                     EnergyDTO dto = currentList.get(i);
                     energy += dto.getMax() - dto.getMin();
                 }
             }
-            vo.setCurrentMonthTotalKwhStr(energy + "kwh");
 
-            long preEnergy = 0;
             if (null != preList && preList.size() > 0) {
-
                 for (int i = 0, len = preList.size(); i < len; i++) {
                     EnergyDTO dto = currentList.get(i);
                     preEnergy += dto.getMax() - dto.getMin();
                 }
             }
-            vo.setPreMonthTotalKwhStr(preEnergy + "kwh");
         }
+
+        vo.setCurrentMonthTotalKwhStr(energy + "kwh");
+        vo.setPreMonthTotalKwhStr(preEnergy + "kwh");
     }
 
     /**
