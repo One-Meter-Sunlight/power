@@ -51,6 +51,10 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     public EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws RuntimeException {
         EnergyStatisticsVO vo = new EnergyStatisticsVO();
 
+        if(null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+            return vo;
+        }
+
         // 获得表格标题并统计当月和上月总能耗
         getTableTitleAndCalcTotalEnergy(command, vo);
 
@@ -191,7 +195,12 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
 
         // 分页查询
         Page<RecordStatisticsVO> page = new Page<>(command.getCurrent(), command.getSize());
-        Map<String, Object> condition = new HashMap<String, Object>();
+
+        if(null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+            return page;
+        }
+
+        Map<String, Object> condition = new HashMap<>();
         if (StringUtils.isNotBlank(command.getLocationFactoryNumb())) {
             condition.put("locationFactoryNumb", command.getLocationFactoryNumb());
         }
