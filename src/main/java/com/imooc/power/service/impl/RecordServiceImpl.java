@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.imooc.power.command.EnergyStatisticsCommand;
+import com.imooc.power.command.HistoryStatisticsCommand;
 import com.imooc.power.dao.RecordMapper;
 import com.imooc.power.dto.EnergyDTO;
 import com.imooc.power.entity.Record;
 import com.imooc.power.service.IRecordService;
 import com.imooc.power.util.DateUtils;
 import com.imooc.power.vo.EnergyStatisticsVO;
+import com.imooc.power.vo.HistoryRecordStatisticsVO;
 import com.imooc.power.vo.RecordStatisticsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -218,4 +220,51 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         return page;
     }
 
+    /**
+     * 分页查询历史数据
+     *
+     * @param command 请求参数
+     * @return
+     */
+    @Override
+    public Page<HistoryRecordStatisticsVO> getPageHistoryRecordStatistics(HistoryStatisticsCommand command) {
+        long startTime = System.currentTimeMillis();
+
+        // 分页查询
+        Page<HistoryRecordStatisticsVO> page = new Page<>(command.getCurrent(), command.getSize());
+
+        // 如果工厂为空则不进行查询
+        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+            return page;
+        }
+
+        // 查询条件
+        Map<String, Object> condition = new HashMap<>();
+        if (StringUtils.isNotBlank(command.getLocationFactoryNumb())) {
+            condition.put("locationFactoryNumb", command.getLocationFactoryNumb());
+        }
+        if (null != command.getMeterNumbs() && command.getMeterNumbs().size() > 0) {
+            condition.put("meterNumbs", command.getMeterNumbs());
+        }
+
+        // 默认开始时间和结束时间
+        String beginDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 00";
+        String endDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 23";
+        if (StringUtils.isNotBlank(command.getBeginDate())) {
+            beginDate = command.getBeginDate();
+        }
+        if (StringUtils.isNotBlank(command.getEndDate())) {
+            endDate = command.getEndDate();
+        }
+
+        condition.put("beginDate", beginDate);
+        condition.put("endDate", endDate);
+
+        // 查询列表
+        List<HistoryRecordStatisticsVO> historyRecordStatisticsVOList = recordMapper.selectHistoryRecordStatistics(page, condition);
+        page.setRecords(historyRecordStatisticsVOList);
+
+        log.info(">>>>>> 分页查询历史数据总耗时：[{}]ms", System.currentTimeMillis() - startTime);
+        return page;
+    }
 }

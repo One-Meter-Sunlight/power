@@ -4,8 +4,10 @@ package com.imooc.power.controller;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.imooc.power.annotation.UserLoginToken;
 import com.imooc.power.command.EnergyStatisticsCommand;
+import com.imooc.power.command.HistoryStatisticsCommand;
 import com.imooc.power.service.IRecordService;
 import com.imooc.power.vo.EnergyStatisticsVO;
+import com.imooc.power.vo.HistoryRecordStatisticsVO;
 import com.imooc.power.vo.RecordStatisticsVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +55,17 @@ public class RecordController {
     @ApiResponse(response = Page.class, code = 200, message = "接口返回对象参数")
     Page<RecordStatisticsVO> pageRecordStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) EnergyStatisticsCommand command) {
         return recordService.getPageRecordStatistics(command);
+    }
+
+    /**
+     * 分页查询历史数据
+     */
+    @UserLoginToken
+    @RequestMapping(value = "/pageHistoryRecordStatistics", method = RequestMethod.POST)
+    @ApiOperation(value = "分页查询历史数据", notes = "分页查询历史数据")
+    @ApiResponse(response = Page.class, code = 200, message = "接口返回对象参数")
+    Page<HistoryRecordStatisticsVO> pageHistoryRecordStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) HistoryStatisticsCommand command) {
+        return recordService.getPageHistoryRecordStatistics(command);
     }
 
 }

@@ -15,6 +15,9 @@ import java.util.List;
 @Data
 public class WarningCommand extends PageInfo {
 
+    /**
+     * 年月日
+     */
     private String date;
     private String locationFactoryNumb;
     private List<String> meterNumbs;

@@ -82,8 +82,37 @@
                </if>
              GROUP BY DATE_FORMAT(record_time,'%Y-%m'), meter_numb
              ORDER BY record_time
-             )t INNER JOIN meter t2 ON t.meterNumb = t2.meter_numb
+             )t LEFT JOIN meter t2 ON t.meterNumb = t2.meter_numb
         GROUP BY t.meterNumb , t2.meter_desc
     </select>
 
+    <!-- 分页查询历史数据 -->
+    <select id="selectHistoryRecordStatistics" parameterType="java.util.Map" resultType="com.imooc.power.vo.HistoryRecordStatisticsVO">
+        SELECT
+            t.meterNumb as meterNumb,
+            t2.meter_desc as meterDesc,
+            t.v_ab AS vAb,
+            t.v_bc AS vBc,
+            t.v_ca AS vCa,
+            t.a_a  AS aA,
+            t.a_b  AS aB,
+            t.a_c  AS aC,
+            t.temp_a AS tempA,
+            t.temp_b AS tempB,
+            t.temp_c AS tempC
+        from record t LEFT JOIN meter t2 ON t.meterNumb = t2.meter_numb
+        <where>
+            DATE_FORMAT(record_time,'%Y-%m-%d %H') &gt; #{beginDate}
+            AND DATE_FORMAT(record_time,'%Y-%m-%d %H') &lt; #{endDate}
+            <if test="null != locationFactoryNumb">
+                AND location_factory_numb = #{locationFactoryNumb}
+            </if>
+            <if test="null != meterNumbs and meterNumbs.size() > 0">
+                AND meter_numb IN
+                <foreach collection="meterNumbs" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

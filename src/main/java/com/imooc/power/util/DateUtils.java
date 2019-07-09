@@ -33,6 +33,11 @@ public class DateUtils {
      */
     public final static String DATE_PATTERN_YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
+    /**
+     * 时间格式(yyyy-MM-dd HH)
+     */
+    public final static String DATE_PATTERN_YYYY_MM_DD_HH = "yyyy-MM-dd HH";
+
     public static String format(Date date) {
         return format(date, DATE_PATTERN_YYYY_MM_DD_HH_MM_SS);
     }

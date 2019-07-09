@@ -6,14 +6,14 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 能耗统计请求参数
+ * 历史数据统计请求参数
  *
  * @Author: Mr.Chen
  * @Version 1.0
  * @Date: 2019/7/1 21:01
  */
 @Data
-public class EnergyStatisticsCommand extends PageInfo {
+public class HistoryStatisticsCommand extends PageInfo {
 
     /**
      * 工厂编号
@@ -24,7 +24,11 @@ public class EnergyStatisticsCommand extends PageInfo {
      */
     private List<String> meterNumbs;
     /**
-     * 能耗统计：年-月
+     * 年-月-日 时
      */
-    private String date;
+    private String beginDate;
+    /**
+     * 年-月-日 时
+     */
+    private String endDate;
 }

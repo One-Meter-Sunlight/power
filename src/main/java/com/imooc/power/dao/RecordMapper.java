@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.imooc.power.dto.EnergyDTO;
 import com.imooc.power.entity.Record;
+import com.imooc.power.vo.HistoryRecordStatisticsVO;
 import com.imooc.power.vo.RecordStatisticsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,4 +41,13 @@ public interface RecordMapper extends BaseMapper<Record> {
      * @return
      */
     List<RecordStatisticsVO> selectRecordStatisticsList(Page<RecordStatisticsVO> page, Map<String, Object> condition);
+
+    /**
+     * 分页查询历史数据
+     *
+     * @param page      分页参数
+     * @param condition 查询条件
+     * @return
+     */
+    List<HistoryRecordStatisticsVO> selectHistoryRecordStatistics(Page<HistoryRecordStatisticsVO> page, Map<String, Object> condition);
 }
