@@ -51,7 +51,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     public EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws RuntimeException {
         EnergyStatisticsVO vo = new EnergyStatisticsVO();
 
-        if(null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
             return vo;
         }
 
@@ -196,7 +196,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         // 分页查询
         Page<RecordStatisticsVO> page = new Page<>(command.getCurrent(), command.getSize());
 
-        if(null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
             return page;
         }
 
