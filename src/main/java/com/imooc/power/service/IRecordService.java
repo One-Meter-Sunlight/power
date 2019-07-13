@@ -3,10 +3,12 @@ package com.imooc.power.service;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.imooc.power.command.EnergyStatisticsCommand;
+import com.imooc.power.command.HistoryRecordCommand;
 import com.imooc.power.command.HistoryStatisticsCommand;
 import com.imooc.power.entity.Record;
 import com.imooc.power.vo.EnergyStatisticsVO;
 import com.imooc.power.vo.HistoryRecordStatisticsVO;
+import com.imooc.power.vo.HistoryRecordVO;
 import com.imooc.power.vo.RecordStatisticsVO;
 
 import java.text.ParseException;
@@ -43,4 +45,12 @@ public interface IRecordService extends IService<Record> {
      * @return
      */
     Page<HistoryRecordStatisticsVO> getPageHistoryRecordStatistics(HistoryStatisticsCommand command);
+
+    /**
+     * 查询历史曲线信息
+     *
+     * @param command
+     * @return
+     */
+    HistoryRecordVO getHistoryRecord(HistoryRecordCommand command);
 }

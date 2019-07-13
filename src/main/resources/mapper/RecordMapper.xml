@@ -102,8 +102,8 @@
             t.temp_c AS tempC
         from record t LEFT JOIN meter t2 ON t.meter_numb = t2.meter_numb
         <where>
-            DATE_FORMAT(t.record_time,'%Y-%m-%d %H') &gt; #{beginDate}
-            AND DATE_FORMAT(t.record_time,'%Y-%m-%d %H') &lt; #{endDate}
+            <![CDATA[ DATE_FORMAT(t.record_time,'%Y-%m-%d %H') >= #{beginDate} ]]>
+            AND <![CDATA[ DATE_FORMAT(t.record_time,'%Y-%m-%d %H') <= #{endDate} ]]>
             <if test="null != locationFactoryNumb">
                 AND t.location_factory_numb = #{locationFactoryNumb}
             </if>
@@ -114,5 +114,32 @@
                 </foreach>
             </if>
         </where>
+    </select>
+
+    <!-- 查询历史数据 -->
+    <select id="selectHistoryRecord" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        record_time,
+        IFNULL(v_ab,0) AS v_ab,
+        IFNULL(v_bc,0) AS v_bc,
+        IFNULL(v_ca,0) AS v_ca,
+        IFNULL(a_a,0) AS a_a,
+        IFNULL(a_b,0) AS a_b,
+        IFNULL(a_c,0) AS a_c,
+        IFNULL(temp_a,0) AS temp_a,
+        IFNULL(temp_b,0) AS temp_b,
+        IFNULL(temp_c,0) AS temp_c
+        from record
+        <where>
+            <![CDATA[ record_time >= #{beginDate} ]]>
+            AND <![CDATA[ record_time <= #{endDate} ]]>
+            <if test="null != locationFactoryNumb">
+                AND location_factory_numb = #{locationFactoryNumb}
+            </if>
+            <if test="null != meterNumb">
+                AND meter_numb = #{meterNumb}
+            </if>
+        </where>
+        order by record_time asc
     </select>
 </mapper>

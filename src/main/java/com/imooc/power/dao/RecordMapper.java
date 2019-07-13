@@ -50,4 +50,12 @@ public interface RecordMapper extends BaseMapper<Record> {
      * @return
      */
     List<HistoryRecordStatisticsVO> selectHistoryRecordStatistics(Page<HistoryRecordStatisticsVO> page, Map<String, Object> condition);
+
+    /**
+     * 查询历史曲线
+     *
+     * @param condition 查询条件
+     * @return
+     */
+    List<Record> selectHistoryRecord(Map<String, Object> condition);
 }

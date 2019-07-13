@@ -3,7 +3,9 @@ package com.imooc.power.service.impl;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.imooc.power.command.EnergyStatisticsCommand;
+import com.imooc.power.command.HistoryRecordCommand;
 import com.imooc.power.command.HistoryStatisticsCommand;
 import com.imooc.power.dao.RecordMapper;
 import com.imooc.power.dto.EnergyDTO;
@@ -12,6 +14,7 @@ import com.imooc.power.service.IRecordService;
 import com.imooc.power.util.DateUtils;
 import com.imooc.power.vo.EnergyStatisticsVO;
 import com.imooc.power.vo.HistoryRecordStatisticsVO;
+import com.imooc.power.vo.HistoryRecordVO;
 import com.imooc.power.vo.RecordStatisticsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -266,5 +269,121 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
 
         log.info(">>>>>> 分页查询历史数据总耗时：[{}]ms", System.currentTimeMillis() - startTime);
         return page;
+    }
+
+    /**
+     * 查询历史曲线信息
+     *
+     * @param command
+     * @return
+     */
+    @Override
+    public HistoryRecordVO getHistoryRecord(HistoryRecordCommand command) {
+        long startTime = System.currentTimeMillis();
+        // 如果工厂为空则不进行查询
+        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+            return null;
+        }
+
+        // 查询条件
+        Map<String, Object> condition = new HashMap<>();
+        if (StringUtils.isNotBlank(command.getLocationFactoryNumb())) {
+            condition.put("locationFactoryNumb", command.getLocationFactoryNumb());
+        }
+        if (StringUtils.isNotBlank(command.getMeterNumb())) {
+            condition.put("meterNumb", command.getMeterNumb());
+        }
+
+        // 默认开始时间和结束时间
+        String beginDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 00:00:00";
+        String endDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 23:59:59";
+        if (StringUtils.isNotBlank(command.getBeginDate())) {
+            beginDate = command.getBeginDate();
+        }
+        if (StringUtils.isNotBlank(command.getEndDate())) {
+            endDate = command.getEndDate();
+        }
+
+        condition.put("beginDate", beginDate);
+        condition.put("endDate", endDate);
+
+        // 查询列表
+        List<Record> recordList = recordMapper.selectHistoryRecord(condition);
+        if (null != recordList && recordList.size() > 0) {
+            return builderHistoryRecordVO(recordList);
+        }
+
+        log.info(">>>>>> 查询历史曲线数据总耗时：[{}]ms", System.currentTimeMillis() - startTime);
+        return null;
+    }
+
+    /**
+     * 组装历史曲线数据
+     *
+     * @param recordList
+     * @return
+     */
+    private HistoryRecordVO builderHistoryRecordVO(List<Record> recordList) {
+        HistoryRecordVO vo = new HistoryRecordVO();
+        List<String> xTitle = Lists.newArrayList();
+        Map<String, Map<String, List<Float>>> map = Maps.newHashMap();
+        // 电压map
+        Map<String, List<Float>> vMap = Maps.newHashMap();
+        // 电流map
+        Map<String, List<Float>> aMap = Maps.newHashMap();
+        // 温度map
+        Map<String, List<Float>> tMap = Maps.newHashMap();
+        map.put("v", vMap);
+        map.put("a", aMap);
+        map.put("t", tMap);
+
+
+        // 电压
+        List<Float> vaList = Lists.newArrayList();
+        List<Float> vbList = Lists.newArrayList();
+        List<Float> vcList = Lists.newArrayList();
+        vMap.put("a", vaList);
+        vMap.put("b", vbList);
+        vMap.put("c", vcList);
+
+        // 电流
+        List<Float> aaList = Lists.newArrayList();
+        List<Float> abList = Lists.newArrayList();
+        List<Float> acList = Lists.newArrayList();
+        aMap.put("a", aaList);
+        aMap.put("b", abList);
+        aMap.put("c", acList);
+
+        // 电压
+        List<Float> taList = Lists.newArrayList();
+        List<Float> tbList = Lists.newArrayList();
+        List<Float> tcList = Lists.newArrayList();
+        tMap.put("a", taList);
+        tMap.put("b", tbList);
+        tMap.put("c", tcList);
+
+        // 循环
+        recordList.stream().forEach(x -> {
+            Date date = x.getRecordTime();
+            String dateStr = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM_DD_HH_MM_SS);
+            xTitle.add(dateStr);
+
+            vaList.add(x.getVAb());
+            vbList.add(x.getVBc());
+            vcList.add(x.getVCa());
+
+            aaList.add(x.getAA());
+            abList.add(x.getAB());
+            acList.add(x.getAC());
+
+            taList.add(x.getTempA());
+            tbList.add(x.getTempB());
+            tcList.add(x.getTempC());
+        });
+
+        vo.setXTitles(xTitle);
+        vo.setMap(map);
+
+        return vo;
     }
 }
