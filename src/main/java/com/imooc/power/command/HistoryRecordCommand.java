@@ -1,9 +1,6 @@
 package com.imooc.power.command;
 
-import com.imooc.power.base.PageInfo;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * 历史数据统计请求参数
@@ -24,11 +21,11 @@ public class HistoryRecordCommand {
      */
     private String meterNumb;
     /**
-     * 年-月-日 时:分:秒
+     * 年-月-日 时:分
      */
     private String beginDate;
     /**
-     * 年-月-日 时:分:秒
+     * 年-月-日 时:分
      */
     private String endDate;
 }

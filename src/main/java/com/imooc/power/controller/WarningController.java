@@ -1,10 +1,10 @@
 package com.imooc.power.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.imooc.power.annotation.UserLoginToken;
 import com.imooc.power.command.WarningCommand;
-import com.imooc.power.entity.Warning;
 import com.imooc.power.service.IWarningService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,8 +41,11 @@ public class WarningController {
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     @ApiOperation(value = "分页查询报警信息", notes = "分页查询报警信息")
     @ApiResponse(response = Page.class, code = 200, message = "接口返回对象参数")
-    Page<Warning> page(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) WarningCommand command) {
-        return warningService.getPageList(command);
+    JSONObject page(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) WarningCommand command) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", 200);
+        jsonObject.put("data", warningService.getPageList(command));
+        return jsonObject;
     }
 
 }

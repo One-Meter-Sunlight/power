@@ -1,10 +1,9 @@
 package com.imooc.power.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.power.annotation.UserLoginToken;
-import com.imooc.power.entity.Factory;
 import com.imooc.power.service.IFactoryService;
-import com.imooc.power.vo.FactoryMetersVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,8 +32,11 @@ public class FactoryController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ApiOperation(value = "查询工厂信息列表", notes = "查询工厂信息列表")
     @ApiResponse(response = List.class, code = 200, message = "接口返回对象参数")
-    List<Factory> list() {
-        return factoryService.getList();
+    JSONObject list() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", 200);
+        jsonObject.put("data", factoryService.getList());
+        return jsonObject;
     }
 
     /**
@@ -44,7 +46,10 @@ public class FactoryController {
     @RequestMapping(value = "/listFactoryMeters", method = RequestMethod.GET)
     @ApiOperation(value = "查询工厂仪器信息列表", notes = "查询工厂仪器信息列表")
     @ApiResponse(response = List.class, code = 200, message = "接口返回对象参数")
-    List<FactoryMetersVO> listFactoryMeters() {
-        return factoryService.getFactoryMetersVOList();
+    JSONObject listFactoryMeters() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", 200);
+        jsonObject.put("data", factoryService.getFactoryMetersVOList());
+        return jsonObject;
     }
 }

@@ -1,6 +1,7 @@
 package com.imooc.power.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.power.annotation.PassToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +27,12 @@ public class TestController {
     @PassToken
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ApiOperation(value = "服务器地址测试", notes = "服务器地址测试")
-    void test() {
+    JSONObject test() {
         log.info(">>>>>>>>>> 服务器地址测试 <<<<<<<<<<");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", 200);
+        return jsonObject;
+
     }
 
 }

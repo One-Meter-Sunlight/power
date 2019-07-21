@@ -298,10 +298,10 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         String beginDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 00:00:00";
         String endDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 23:59:59";
         if (StringUtils.isNotBlank(command.getBeginDate())) {
-            beginDate = command.getBeginDate();
+            beginDate = command.getBeginDate() + ":00";
         }
         if (StringUtils.isNotBlank(command.getEndDate())) {
-            endDate = command.getEndDate();
+            endDate = command.getEndDate() + ":59";
         }
 
         condition.put("beginDate", beginDate);

@@ -1,6 +1,7 @@
 package com.imooc.power.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.power.annotation.UserLoginToken;
 import com.imooc.power.entity.Meter;
 import com.imooc.power.service.IMeterService;
@@ -35,7 +36,10 @@ public class MeterController {
     @ApiOperation(value = "查询仪表信息列表", notes = "通过工厂编号查询仪表信息列表")
     @ApiImplicitParam(name = "factoryNum", value = "工厂编号", required = true, paramType = "path", dataType = "String")
     @ApiResponse(response = Boolean.class, code = 200, message = "接口返回对象参数")
-    List<Meter> getListByFactoryNum(@PathVariable(value = "factoryNum") String factoryNum) {
-        return meterService.getListByFactoryNum(factoryNum);
+    JSONObject getListByFactoryNum(@PathVariable(value = "factoryNum") String factoryNum) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", 200);
+        jsonObject.put("data", meterService.getListByFactoryNum(factoryNum));
+        return jsonObject;
     }
 }
