@@ -35,7 +35,7 @@ public class MeterController {
     @RequestMapping(value = "/{factoryNum}", method = RequestMethod.GET)
     @ApiOperation(value = "查询仪表信息列表", notes = "通过工厂编号查询仪表信息列表")
     @ApiImplicitParam(name = "factoryNum", value = "工厂编号", required = true, paramType = "path", dataType = "String")
-    @ApiResponse(response = Boolean.class, code = 200, message = "接口返回对象参数")
+    @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject getListByFactoryNum(@PathVariable(value = "factoryNum") String factoryNum) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", 200);

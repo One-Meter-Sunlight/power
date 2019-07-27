@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.service.IService;
 import com.imooc.power.command.WarningCommand;
 import com.imooc.power.entity.Warning;
 
+import java.util.List;
+
 /**
  * 报警记录表 服务类
  *
@@ -20,4 +22,11 @@ public interface IWarningService extends IService<Warning> {
      * @return
      */
     Page<Warning> getPageList(WarningCommand command);
+
+    /**
+     * 批量新增报警信息
+     *
+     * @param list
+     */
+    void batchAdd(List<Warning> list);
 }

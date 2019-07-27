@@ -33,8 +33,8 @@ public class UserController {
     @PassToken
     @RequestMapping(value = "/loginIn", method = RequestMethod.POST)
     @ApiOperation(value = "登录", notes = "用户登录")
-    @ApiResponse(response = Boolean.class, code = 200, message = "接口返回对象参数")
-    public Object login(@RequestBody User user) {
+    @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
+    public JSONObject login(@RequestBody User user) {
         JSONObject jsonObject = new JSONObject();
         if (null == user || StringUtils.isBlank(user.getAccountId())) {
             jsonObject.put("status", false);

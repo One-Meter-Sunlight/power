@@ -12,6 +12,7 @@ import com.imooc.power.vo.HistoryRecordVO;
 import com.imooc.power.vo.RecordStatisticsVO;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * 服务类
@@ -53,4 +54,11 @@ public interface IRecordService extends IService<Record> {
      * @return
      */
     HistoryRecordVO getHistoryRecord(HistoryRecordCommand command);
+
+    /**
+     * 批量新增仪表电压电流温度记录
+     *
+     * @param list
+     */
+    void batchAdd(List<Record> list);
 }

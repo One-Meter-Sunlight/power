@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 工厂信息表 前端控制器
@@ -31,7 +30,7 @@ public class FactoryController {
     @UserLoginToken
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ApiOperation(value = "查询工厂信息列表", notes = "查询工厂信息列表")
-    @ApiResponse(response = List.class, code = 200, message = "接口返回对象参数")
+    @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject list() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", 200);
@@ -45,7 +44,7 @@ public class FactoryController {
     @UserLoginToken
     @RequestMapping(value = "/listFactoryMeters", method = RequestMethod.GET)
     @ApiOperation(value = "查询工厂仪器信息列表", notes = "查询工厂仪器信息列表")
-    @ApiResponse(response = List.class, code = 200, message = "接口返回对象参数")
+    @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject listFactoryMeters() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", 200);

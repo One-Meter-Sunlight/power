@@ -46,6 +46,16 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     private RecordMapper recordMapper;
 
     /**
+     * 批量新增仪表电压电流温度记录
+     *
+     * @param list
+     */
+    @Override
+    public void batchAdd(List<Record> list) {
+        insertBatch(list);
+    }
+
+    /**
      * 近两个月总能耗统计
      *
      * @param command 请求参数

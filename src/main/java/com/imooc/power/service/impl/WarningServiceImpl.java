@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 报警记录表 服务实现类
  *
@@ -24,6 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> implements IWarningService {
 
     private static final Logger log = LoggerFactory.getLogger(WarningServiceImpl.class);
+
+    @Override
+    public void batchAdd(List<Warning> list) {
+        insertBatch(list);
+    }
 
     /**
      * 分页查询报警信息
