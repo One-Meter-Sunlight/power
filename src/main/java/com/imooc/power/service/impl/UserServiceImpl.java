@@ -42,8 +42,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         Page<User> page = new Page<>(command.getCurrent(), command.getSize());
         User user = BeanUtil.copyProperties(command, User.class);
         EntityWrapper<User> eWrapper = new EntityWrapper<>(user);
-        Page<User> pageList = selectPage(page, eWrapper);
-        return pageList;
+        return selectPage(page, eWrapper);
     }
 
     /**

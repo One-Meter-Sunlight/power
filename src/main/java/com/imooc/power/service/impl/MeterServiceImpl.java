@@ -22,8 +22,6 @@ import java.util.List;
 @Transactional(rollbackFor = RuntimeException.class)
 public class MeterServiceImpl extends ServiceImpl<MeterMapper, Meter> implements IMeterService {
 
-    private static final Logger log = LoggerFactory.getLogger(MeterServiceImpl.class);
-
     @Autowired
     private MeterMapper meterMapper;
 
