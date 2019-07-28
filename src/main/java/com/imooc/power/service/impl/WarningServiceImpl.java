@@ -44,7 +44,7 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
 
         Page<Warning> page = new Page<>(command.getCurrent(), command.getSize());
         EntityWrapper<Warning> eWrapper = new EntityWrapper<>();
-        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+        if (null == command || StringUtils.isBlank(command.getLocationFactoryNumb())) {
             return page;
         }
 

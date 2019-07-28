@@ -66,7 +66,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     public EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws RuntimeException {
         EnergyStatisticsVO vo = new EnergyStatisticsVO();
 
-        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+        if (null == command || StringUtils.isBlank(command.getLocationFactoryNumb())) {
             return vo;
         }
 
@@ -291,7 +291,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     public HistoryRecordVO getHistoryRecord(HistoryRecordCommand command) {
         long startTime = System.currentTimeMillis();
         // 如果工厂为空则不进行查询
-        if (null == command.getLocationFactoryNumb() || StringUtils.isBlank(command.getLocationFactoryNumb())) {
+        if (null == command || StringUtils.isBlank(command.getLocationFactoryNumb())) {
             return null;
         }
 
@@ -319,12 +319,15 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
 
         // 查询列表
         List<Record> recordList = recordMapper.selectHistoryRecord(condition);
+        HistoryRecordVO vo;
         if (null != recordList && recordList.size() > 0) {
-            return builderHistoryRecordVO(recordList);
+            vo = builderHistoryRecordVO(recordList, true);
+        } else {
+            vo = builderHistoryRecordVO(recordList, false);
         }
 
         log.info(">>>>>> 查询历史曲线数据总耗时：[{}]ms", System.currentTimeMillis() - startTime);
-        return null;
+        return vo;
     }
 
     /**
@@ -333,7 +336,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
      * @param recordList
      * @return
      */
-    private HistoryRecordVO builderHistoryRecordVO(List<Record> recordList) {
+    private HistoryRecordVO builderHistoryRecordVO(List<Record> recordList, boolean isNotNull) {
         HistoryRecordVO vo = new HistoryRecordVO();
         List<String> xTitle = Lists.newArrayList();
         Map<String, Map<String, List<Float>>> map = Maps.newHashMap();
@@ -372,24 +375,26 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         tMap.put("b", tbList);
         tMap.put("c", tcList);
 
-        // 循环
-        recordList.stream().forEach(x -> {
-            Date date = x.getRecordTime();
-            String dateStr = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM_DD_HH_MM_SS);
-            xTitle.add(dateStr);
+        if (isNotNull) {
+            // 循环
+            recordList.stream().forEach(x -> {
+                Date date = x.getRecordTime();
+                String dateStr = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM_DD_HH_MM_SS);
+                xTitle.add(dateStr);
 
-            vaList.add(x.getVAb());
-            vbList.add(x.getVBc());
-            vcList.add(x.getVCa());
+                vaList.add(x.getVAb());
+                vbList.add(x.getVBc());
+                vcList.add(x.getVCa());
 
-            aaList.add(x.getAA());
-            abList.add(x.getAB());
-            acList.add(x.getAC());
+                aaList.add(x.getAA());
+                abList.add(x.getAB());
+                acList.add(x.getAC());
 
-            taList.add(x.getTempA());
-            tbList.add(x.getTempB());
-            tcList.add(x.getTempC());
-        });
+                taList.add(x.getTempA());
+                tbList.add(x.getTempB());
+                tcList.add(x.getTempC());
+            });
+        }
 
         vo.setXTitles(xTitle);
         vo.setMap(map);
