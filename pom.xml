@@ -6,7 +6,7 @@
     <artifactId>power</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>power</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>power</description>
 
     <parent>
@@ -31,18 +31,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -102,6 +90,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
