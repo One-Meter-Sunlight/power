@@ -30,7 +30,8 @@ public class TestController {
     JSONObject test() {
         log.info(">>>>>>>>>> 服务器地址测试 <<<<<<<<<<");
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         return jsonObject;
 
     }

@@ -43,7 +43,8 @@ public class RecordController {
     JSONObject batchAdd(@RequestBody List<Record> list) {
         recordService.batchAdd(list);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         return jsonObject;
     }
 
@@ -56,7 +57,8 @@ public class RecordController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject totalEnergyStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) EnergyStatisticsCommand command) throws ParseException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", recordService.getTotalEnergyStatistics(command));
         return jsonObject;
     }
@@ -70,7 +72,8 @@ public class RecordController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject pageRecordStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) EnergyStatisticsCommand command) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", recordService.getPageRecordStatistics(command));
         return jsonObject;
     }
@@ -84,7 +87,8 @@ public class RecordController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject pageHistoryRecordStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) HistoryStatisticsCommand command) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", recordService.getPageHistoryRecordStatistics(command));
         return jsonObject;
     }
@@ -98,7 +102,8 @@ public class RecordController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject historyRecord(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) HistoryRecordCommand command) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", recordService.getHistoryRecord(command));
         return jsonObject;
     }

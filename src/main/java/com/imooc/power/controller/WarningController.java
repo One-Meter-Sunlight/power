@@ -44,7 +44,8 @@ public class WarningController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject page(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) WarningCommand command) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", warningService.getPageList(command));
         return jsonObject;
     }
@@ -56,7 +57,8 @@ public class WarningController {
     JSONObject batchAdd(@RequestBody List<Warning> list) {
         warningService.batchAdd(list);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         return jsonObject;
     }
 

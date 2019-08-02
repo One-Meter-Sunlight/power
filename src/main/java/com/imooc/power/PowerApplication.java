@@ -8,7 +8,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-public class PowerApplication extends SpringBootServletInitializer {
+//public class PowerApplication {
+
+    public class PowerApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

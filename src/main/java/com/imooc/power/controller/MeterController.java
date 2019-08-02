@@ -38,7 +38,8 @@ public class MeterController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject getListByFactoryNum(@PathVariable(value = "factoryNum") String factoryNum) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", meterService.getListByFactoryNum(factoryNum));
         return jsonObject;
     }

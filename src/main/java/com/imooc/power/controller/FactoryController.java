@@ -33,7 +33,8 @@ public class FactoryController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject list() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", factoryService.getList());
         return jsonObject;
     }
@@ -47,7 +48,8 @@ public class FactoryController {
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     JSONObject listFactoryMeters() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 200);
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
         jsonObject.put("data", factoryService.getFactoryMetersVOList());
         return jsonObject;
     }

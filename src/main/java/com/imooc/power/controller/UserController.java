@@ -37,22 +37,26 @@ public class UserController {
     public JSONObject login(@RequestBody User user) {
         JSONObject jsonObject = new JSONObject();
         if (null == user || StringUtils.isBlank(user.getAccountId())) {
+            jsonObject.put("code", 403);
             jsonObject.put("status", false);
             jsonObject.put("message", "请输入登录账号");
             return jsonObject;
         }
         User userForBase = userService.getByAccountId(user.getAccountId());
         if (userForBase == null) {
+            jsonObject.put("code", 403);
             jsonObject.put("status", false);
             jsonObject.put("message", "登录失败,用户不存在");
             return jsonObject;
         } else {
             if (!userForBase.getPassword().equals(user.getPassword())) {
+                jsonObject.put("code", 403);
                 jsonObject.put("status", false);
                 jsonObject.put("message", "登录失败,密码错误");
                 return jsonObject;
             } else {
                 String token = TokenUtil.getToken(userForBase);
+                jsonObject.put("code", 200);
                 jsonObject.put("status", true);
                 jsonObject.put("token", token);
                 userForBase.setPassword(null);
