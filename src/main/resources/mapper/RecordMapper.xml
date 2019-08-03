@@ -91,15 +91,16 @@
         SELECT
             t.meter_numb as meterNumb,
             t2.meter_desc as meterDesc,
+            t.record_time as recordTime,
             t.v_ab AS vAb,
             t.v_bc AS vBc,
             t.v_ca AS vCa,
             t.a_a  AS aA,
             t.a_b  AS aB,
             t.a_c  AS aC,
-            case WHEN t.temp_a <![CDATA[ < 0 ]]> THEN '未监测' ELSE t.temp_a END AS tempA,
-            case WHEN t.temp_b <![CDATA[ < 0 ]]> THEN '未监测' ELSE t.temp_b END AS tempB,
-            case WHEN t.temp_c <![CDATA[ < 0 ]]> THEN '未监测' ELSE t.temp_c END AS tempC
+            t.temp_a AS tempA,
+            t.temp_b AS tempB,
+            t.temp_c AS tempC
         from record t LEFT JOIN meter t2 ON t.meter_numb = t2.meter_numb
         <where>
             <![CDATA[ DATE_FORMAT(t.record_time,'%Y-%m-%d %H') >= #{beginDate} ]]>
