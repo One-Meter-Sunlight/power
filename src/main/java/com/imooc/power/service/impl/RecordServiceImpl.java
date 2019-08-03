@@ -11,7 +11,7 @@ import com.imooc.power.dao.RecordMapper;
 import com.imooc.power.dto.EnergyDTO;
 import com.imooc.power.entity.Record;
 import com.imooc.power.service.IRecordService;
-import com.imooc.power.util.DateUtils;
+import com.imooc.power.util.DateUtil;
 import com.imooc.power.vo.EnergyStatisticsVO;
 import com.imooc.power.vo.HistoryRecordStatisticsVO;
 import com.imooc.power.vo.HistoryRecordVO;
@@ -85,9 +85,9 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
      */
     private void getTableTitleAndCalcTotalEnergy(EnergyStatisticsCommand command, EnergyStatisticsVO vo) {
         // 查询条件
-        Date preDate = DateUtils.addMonth(-1);
-        String query_date_current_month = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM);
-        String query_date_pre_month = DateUtils.format(preDate, DateUtils.DATE_PATTERN_YYYY_MM);
+        Date preDate = DateUtil.addMonth(-1);
+        String query_date_current_month = DateUtil.format(new Date(), DateUtil.DATE_PATTERN_YYYY_MM);
+        String query_date_pre_month = DateUtil.format(preDate, DateUtil.DATE_PATTERN_YYYY_MM);
 
         // 上月时间和上上月月份字符串
         String preDateStr;
@@ -95,17 +95,17 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
 
         if (StringUtils.isNoneBlank(command.getDate())) {
             try {
-                Date selectDate = DateUtils.passDate(command.getDate(), DateUtils.DATE_PATTERN_YYYY_MM);
+                Date selectDate = DateUtil.passDate(command.getDate(), DateUtil.DATE_PATTERN_YYYY_MM);
 
                 // 上月时间和上上月时间
-                Date date = DateUtils.addMonth(selectDate, -1);
-                preDateStr = DateUtils.format(date, DateUtils.DATE_PATTERN_MM);
+                Date date = DateUtil.addMonth(selectDate, -1);
+                preDateStr = DateUtil.format(date, DateUtil.DATE_PATTERN_MM);
 
-                Date date2 = DateUtils.addMonth(selectDate, -2);
-                pre2DateStr = DateUtils.format(date2, DateUtils.DATE_PATTERN_MM);
+                Date date2 = DateUtil.addMonth(selectDate, -2);
+                pre2DateStr = DateUtil.format(date2, DateUtil.DATE_PATTERN_MM);
 
                 query_date_current_month = command.getDate();
-                query_date_pre_month = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM);
+                query_date_pre_month = DateUtil.format(date, DateUtil.DATE_PATTERN_YYYY_MM);
             } catch (Exception e) {
                 log.error("时间转换异常：" + e.getMessage());
                 throw new RuntimeException("系统异常");
@@ -113,11 +113,11 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         } else {
             try {
                 // 上月时间和上上月时间
-                Date date = DateUtils.addMonth(-1);
-                preDateStr = DateUtils.format(date, DateUtils.DATE_PATTERN_MM);
+                Date date = DateUtil.addMonth(-1);
+                preDateStr = DateUtil.format(date, DateUtil.DATE_PATTERN_MM);
 
-                Date date2 = DateUtils.addMonth(-2);
-                pre2DateStr = DateUtils.format(date2, DateUtils.DATE_PATTERN_MM);
+                Date date2 = DateUtil.addMonth(-2);
+                pre2DateStr = DateUtil.format(date2, DateUtil.DATE_PATTERN_MM);
             } catch (Exception e) {
                 log.error("时间转换异常：" + e.getMessage());
                 throw new RuntimeException("系统异常");
@@ -185,23 +185,23 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         long startTime = System.currentTimeMillis();
 
         // 查询条件
-        Date preDate = DateUtils.addMonth(-1);
-        Date pre2Date = DateUtils.addMonth(-2);
-        String query_date_current_month = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM);
-        String query_date_pre_month = DateUtils.format(preDate, DateUtils.DATE_PATTERN_YYYY_MM);
-        String query_date_pre2_month = DateUtils.format(pre2Date, DateUtils.DATE_PATTERN_YYYY_MM);
+        Date preDate = DateUtil.addMonth(-1);
+        Date pre2Date = DateUtil.addMonth(-2);
+        String query_date_current_month = DateUtil.format(new Date(), DateUtil.DATE_PATTERN_YYYY_MM);
+        String query_date_pre_month = DateUtil.format(preDate, DateUtil.DATE_PATTERN_YYYY_MM);
+        String query_date_pre2_month = DateUtil.format(pre2Date, DateUtil.DATE_PATTERN_YYYY_MM);
 
         if (StringUtils.isNoneBlank(command.getDate())) {
             try {
-                Date selectDate = DateUtils.passDate(command.getDate(), DateUtils.DATE_PATTERN_YYYY_MM);
+                Date selectDate = DateUtil.passDate(command.getDate(), DateUtil.DATE_PATTERN_YYYY_MM);
                 query_date_current_month = command.getDate();
 
                 // 上月时间和上上月时间
-                Date date = DateUtils.addMonth(selectDate, -1);
-                query_date_pre_month = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM);
+                Date date = DateUtil.addMonth(selectDate, -1);
+                query_date_pre_month = DateUtil.format(date, DateUtil.DATE_PATTERN_YYYY_MM);
 
-                Date date2 = DateUtils.addMonth(selectDate, -2);
-                query_date_pre2_month = DateUtils.format(date2, DateUtils.DATE_PATTERN_YYYY_MM);
+                Date date2 = DateUtil.addMonth(selectDate, -2);
+                query_date_pre2_month = DateUtil.format(date2, DateUtil.DATE_PATTERN_YYYY_MM);
             } catch (Exception e) {
                 log.error("时间转换异常：" + e.getMessage());
                 throw new RuntimeException("系统异常");
@@ -261,8 +261,8 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         }
 
         // 默认开始时间和结束时间
-        String beginDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 00";
-        String endDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 23";
+        String beginDate = DateUtil.format(new Date(), DateUtil.DATE_PATTERN_YYYY_MM_DD) + " 00";
+        String endDate = DateUtil.format(new Date(), DateUtil.DATE_PATTERN_YYYY_MM_DD) + " 23";
         if (StringUtils.isNotBlank(command.getBeginDate())) {
             beginDate = command.getBeginDate();
         }
@@ -305,8 +305,8 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         }
 
         // 默认开始时间和结束时间
-        String beginDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 00:00:00";
-        String endDate = DateUtils.format(new Date(), DateUtils.DATE_PATTERN_YYYY_MM_DD) + " 23:59:59";
+        String beginDate = DateUtil.format(new Date(), DateUtil.DATE_PATTERN_YYYY_MM_DD) + " 00:00:00";
+        String endDate = DateUtil.format(new Date(), DateUtil.DATE_PATTERN_YYYY_MM_DD) + " 23:59:59";
         if (StringUtils.isNotBlank(command.getBeginDate())) {
             beginDate = command.getBeginDate() + ":00";
         }
@@ -379,7 +379,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
             // 循环
             recordList.stream().forEach(x -> {
                 Date date = x.getRecordTime();
-                String dateStr = DateUtils.format(date, DateUtils.DATE_PATTERN_YYYY_MM_DD_HH_MM_SS);
+                String dateStr = DateUtil.format(date, DateUtil.DATE_PATTERN_YYYY_MM_DD_HH_MM_SS);
                 xTitle.add(dateStr);
 
                 vaList.add(x.getVAb());

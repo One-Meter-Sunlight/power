@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author kai.chen
  */
-public class DateUtils {
+public class DateUtil {
 
     /**
      * 时间格式(yyyy-MM-dd)
