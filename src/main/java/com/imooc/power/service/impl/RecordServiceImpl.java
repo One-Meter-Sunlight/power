@@ -390,9 +390,15 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
                 abList.add(x.getAB());
                 acList.add(x.getAC());
 
-                taList.add(x.getTempA());
-                tbList.add(x.getTempB());
-                tcList.add(x.getTempC());
+                if(null != x.getTempA()) {
+                    taList.add(x.getTempA());
+                }
+                if(null != x.getTempB()) {
+                    tbList.add(x.getTempB());
+                }
+                if(null != x.getTempC()) {
+                    tcList.add(x.getTempC());
+                }
             });
         }
 
