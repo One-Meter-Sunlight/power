@@ -122,15 +122,15 @@
     <select id="selectHistoryRecord" parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT
         record_time,
-        IFNULL(v_ab,0) AS v_ab,
-        IFNULL(v_bc,0) AS v_bc,
-        IFNULL(v_ca,0) AS v_ca,
-        IFNULL(a_a,0) AS a_a,
-        IFNULL(a_b,0) AS a_b,
-        IFNULL(a_c,0) AS a_c,
-        IFNULL(temp_a,0) AS temp_a,
-        IFNULL(temp_b,0) AS temp_b,
-        IFNULL(temp_c,0) AS temp_c
+        v_ab AS v_ab,
+        v_bc AS v_bc,
+        v_ca AS v_ca,
+        a_a AS a_a,
+        a_b AS a_b,
+        a_c AS a_c,
+        temp_a AS temp_a,
+        temp_b AS temp_b,
+        temp_c AS temp_c
         from record
         <where>
             <![CDATA[ record_time >= #{beginDate} ]]>
