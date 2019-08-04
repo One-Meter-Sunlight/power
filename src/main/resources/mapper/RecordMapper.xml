@@ -115,7 +115,7 @@
                 </foreach>
             </if>
         </where>
-        order by t.record_time desc
+        order by t.meter_numb, t.record_time desc
     </select>
 
     <!-- 查询历史数据 -->
