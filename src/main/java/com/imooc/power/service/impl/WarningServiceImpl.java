@@ -53,8 +53,11 @@ public class WarningServiceImpl extends ServiceImpl<WarningMapper, Warning> impl
         if (null != command.getMeterNumbs() && command.getMeterNumbs().size() > 0) {
             eWrapper.in("meter_numb", command.getMeterNumbs());
         }
-        if (StringUtils.isNoneBlank(command.getDate())) {
-            eWrapper.eq("DATE_FORMAT(record_time, '%Y-%m-%d')", command.getDate());
+        if (StringUtils.isNoneBlank(command.getStartDate())) {
+            eWrapper.ge("record_time", command.getStartDate() + " 00:00:00");
+        }
+        if (StringUtils.isNoneBlank(command.getEndDate())) {
+            eWrapper.le("record_time", command.getEndDate() + " 23:59:59");
         }
         eWrapper.orderBy("record_time", false);
 

@@ -18,7 +18,8 @@ public class WarningCommand extends PageInfo {
     /**
      * 年月日
      */
-    private String date;
+    private String startDate;
+    private String endDate;
     private String locationFactoryNumb;
     private List<String> meterNumbs;
 
