@@ -413,10 +413,9 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     @Override
     public List<MeterRecordVO> getMeterRecords() {
         List<MeterRecordVO> voList = Lists.newArrayList();
-        String factoryString = "AB";
         List<String> meters = Lists.newArrayList("AB0011000", "AB0511000", "CD0011000", "EE0011000");
         for (String meter : meters) {
-            Record record = recordMapper.selectMeterRecord(factoryString, meter);
+            Record record = recordMapper.selectMeterRecord(meter);
             if (null != record) {
                 MeterRecordVO vo = new MeterRecordVO();
                 BeanUtil.copyProperties(record, vo);

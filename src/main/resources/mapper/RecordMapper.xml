@@ -156,14 +156,7 @@
             a_b AS a_b,
             a_c AS a_c
         from record
-        <where>
-            <if test="null != factory">
-                AND location_factory_numb = #{factory}
-            </if>
-            <if test="null != meter">
-                AND meter_numb = #{meter}
-            </if>
-        </where>
+        where meter_numb = #{meter}
         order by record_time desc limit 1;
     </select>
 </mapper>
