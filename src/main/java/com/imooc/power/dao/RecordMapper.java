@@ -58,4 +58,13 @@ public interface RecordMapper extends BaseMapper<Record> {
      * @return
      */
     List<Record> selectHistoryRecord(Map<String, Object> condition);
+
+    /**
+     * 根据条件查询电表记录
+     *
+     * @param factoryString
+     * @param meter
+     * @return
+     */
+    Record selectMeterRecord(@Param("factory") String factoryString, @Param("meter") String meter);
 }

@@ -7,7 +7,6 @@ import com.imooc.power.command.EnergyStatisticsCommand;
 import com.imooc.power.command.HistoryRecordCommand;
 import com.imooc.power.command.HistoryStatisticsCommand;
 import com.imooc.power.entity.Record;
-import com.imooc.power.entity.Warning;
 import com.imooc.power.service.IRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -49,13 +47,28 @@ public class RecordController {
     }
 
     /**
+     * 查询主页电表电压电流
+     */
+    @UserLoginToken
+    @RequestMapping(value = "/meterRecord", method = RequestMethod.GET)
+    @ApiOperation(value = "查询主页电表电压电流", notes = "查询主页电表电压电流")
+    @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
+    JSONObject meterRecord() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", 200);
+        jsonObject.put("status", true);
+        jsonObject.put("data", recordService.getMeterRecords());
+        return jsonObject;
+    }
+
+    /**
      * 总能耗统计
      */
     @UserLoginToken
     @RequestMapping(value = "/totalEnergyStatistics", method = RequestMethod.POST)
     @ApiOperation(value = "总能耗统计", notes = "近两个月总能耗统计")
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
-    JSONObject totalEnergyStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) EnergyStatisticsCommand command) throws ParseException {
+    JSONObject totalEnergyStatistics(@RequestBody @ApiParam(name = "请求对象", value = "传入JSON格式", required = true) EnergyStatisticsCommand command) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 200);
         jsonObject.put("status", true);

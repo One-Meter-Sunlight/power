@@ -11,11 +11,9 @@ import com.imooc.power.dao.RecordMapper;
 import com.imooc.power.dto.EnergyDTO;
 import com.imooc.power.entity.Record;
 import com.imooc.power.service.IRecordService;
+import com.imooc.power.util.BeanUtil;
 import com.imooc.power.util.DateUtil;
-import com.imooc.power.vo.EnergyStatisticsVO;
-import com.imooc.power.vo.HistoryRecordStatisticsVO;
-import com.imooc.power.vo.HistoryRecordVO;
-import com.imooc.power.vo.RecordStatisticsVO;
+import com.imooc.power.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +61,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
      * @throws ParseException
      */
     @Override
-    public EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws RuntimeException {
+    public EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) {
         EnergyStatisticsVO vo = new EnergyStatisticsVO();
 
         if (null == command || StringUtils.isBlank(command.getLocationFactoryNumb())) {
@@ -390,13 +388,13 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
                 abList.add(x.getAB());
                 acList.add(x.getAC());
 
-                if(null != x.getTempA()) {
+                if (null != x.getTempA()) {
                     taList.add(x.getTempA());
                 }
-                if(null != x.getTempB()) {
+                if (null != x.getTempB()) {
                     tbList.add(x.getTempB());
                 }
-                if(null != x.getTempC()) {
+                if (null != x.getTempC()) {
                     tcList.add(x.getTempC());
                 }
             });
@@ -406,5 +404,25 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         vo.setMap(map);
 
         return vo;
+    }
+
+    /**
+     * 查询主页电表电压电流
+     * @return
+     */
+    @Override
+    public List<MeterRecordVO> getMeterRecords() {
+        List<MeterRecordVO> voList = Lists.newArrayList();
+        String factoryString = "AB";
+        List<String> meters = Lists.newArrayList("AB0011000", "AB0511000", "CD0011000", "EE0011000");
+        for (String meter : meters) {
+            Record record = recordMapper.selectMeterRecord(factoryString, meter);
+            if (null != record) {
+                MeterRecordVO vo = new MeterRecordVO();
+                BeanUtil.copyProperties(record, vo);
+                voList.add(vo);
+            }
+        }
+        return voList;
     }
 }

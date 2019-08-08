@@ -6,12 +6,8 @@ import com.imooc.power.command.EnergyStatisticsCommand;
 import com.imooc.power.command.HistoryRecordCommand;
 import com.imooc.power.command.HistoryStatisticsCommand;
 import com.imooc.power.entity.Record;
-import com.imooc.power.vo.EnergyStatisticsVO;
-import com.imooc.power.vo.HistoryRecordStatisticsVO;
-import com.imooc.power.vo.HistoryRecordVO;
-import com.imooc.power.vo.RecordStatisticsVO;
+import com.imooc.power.vo.*;
 
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -27,9 +23,8 @@ public interface IRecordService extends IService<Record> {
      *
      * @param command 请求参数
      * @return
-     * @throws ParseException
      */
-    EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command) throws ParseException;
+    EnergyStatisticsVO getTotalEnergyStatistics(EnergyStatisticsCommand command);
 
     /**
      * 仪表能耗分页统计
@@ -61,4 +56,11 @@ public interface IRecordService extends IService<Record> {
      * @param list
      */
     void batchAdd(List<Record> list);
+
+    /**
+     * 查询主页电表电压电流
+     *
+     * @return
+     */
+    List<MeterRecordVO> getMeterRecords();
 }

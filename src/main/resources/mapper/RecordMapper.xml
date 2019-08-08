@@ -144,4 +144,26 @@
         </where>
         order by record_time asc
     </select>
+
+    <!--根据条件查询电表记录-->
+    <select id="selectMeterRecord" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+            meter_numb,
+            v_ab AS v_ab,
+            v_bc AS v_bc,
+            v_ca AS v_ca,
+            a_a AS a_a,
+            a_b AS a_b,
+            a_c AS a_c
+        from record
+        <where>
+            <if test="null != factory">
+                AND location_factory_numb = #{factory}
+            </if>
+            <if test="null != meter">
+                AND meter_numb = #{meter}
+            </if>
+        </where>
+        order by record_time desc limit 1;
+    </select>
 </mapper>
