@@ -27,7 +27,7 @@
     </select>
 
     <!-- 查询账户信息列表 -->
-    <select id="selectList" resultMap="BaseResultMap">
+    <select id="selectUserList" resultMap="BaseResultMap">
         select
         <include refid="column"/>
         from user

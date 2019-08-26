@@ -5,18 +5,18 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.imooc.power.annotation.PassToken;
 import com.imooc.power.annotation.UserLoginToken;
 import com.imooc.power.command.UserCommand;
+import com.imooc.power.entity.PushBean;
 import com.imooc.power.entity.User;
 import com.imooc.power.service.IUserService;
+import com.imooc.power.service.JiGuangPushService;
 import com.imooc.power.util.TokenUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -33,6 +33,9 @@ public class UserController {
 
     @Resource
     private IUserService userService;
+
+    @Autowired
+    private JiGuangPushService jiGuangPushService;
 
     @PassToken
     @RequestMapping(value = "/loginIn", method = RequestMethod.POST)
@@ -111,5 +114,21 @@ public class UserController {
         return userService.getUserList();
     }
 
+    /**
+     * 群推，广播
+     *
+     * @param title   推送标题
+     * @param content 推送内容
+     * @return
+     */
+    @PassToken
+    @PostMapping("/pushAll")
+    public boolean pushAll(@RequestParam String title, @RequestParam String content) {
+        PushBean pushBean = new PushBean();
+        pushBean.setTitle(title);
+        pushBean.setAlert(content);
+        boolean flag = jiGuangPushService.pushAndroid(pushBean);
+        return false;
+    }
 
 }

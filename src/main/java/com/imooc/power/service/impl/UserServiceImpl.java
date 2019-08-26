@@ -64,7 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public List<User> getUserList() {
         log.info("查询账户信息列表");
-        return userMapper.selectList();
+        return userMapper.selectUserList();
     }
 
     /**

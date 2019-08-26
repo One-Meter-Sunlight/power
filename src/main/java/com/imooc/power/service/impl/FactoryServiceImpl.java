@@ -36,7 +36,7 @@ public class FactoryServiceImpl extends ServiceImpl<FactoryMapper, Factory> impl
     @Override
     public List<Factory> getList() {
         log.info("查询工厂列表");
-        return factoryMapper.selectList();
+        return factoryMapper.selectFactoryList();
     }
 
     /**

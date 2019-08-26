@@ -23,7 +23,7 @@
     </sql>
 
     <!-- 查询工厂列表 -->
-    <select id="selectList" resultMap="BaseResultMap">
+    <select id="selectFactoryList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from factory

@@ -28,6 +28,6 @@ public interface UserMapper extends BaseMapper<User> {
      *
      * @return
      */
-    List<User> selectList();
+    List<User> selectUserList();
 
 }

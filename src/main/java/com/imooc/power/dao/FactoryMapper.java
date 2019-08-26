@@ -21,7 +21,7 @@ public interface FactoryMapper extends BaseMapper<Factory> {
      *
      * @return
      */
-    List<Factory> selectList();
+    List<Factory> selectFactoryList();
 
     /**
      * 查询所有工厂以及工厂下的电表
