@@ -127,7 +127,7 @@ public class UserController {
         PushBean pushBean = new PushBean();
         pushBean.setTitle(title);
         pushBean.setAlert(content);
-        boolean flag = jiGuangPushService.pushAndroid(pushBean);
+        boolean flag = jiGuangPushService.pushAll(pushBean);
         return false;
     }
 
