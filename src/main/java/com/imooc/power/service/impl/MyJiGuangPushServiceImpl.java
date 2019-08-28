@@ -38,7 +38,6 @@ public class MyJiGuangPushServiceImpl implements MyJiGuangPushService {
                 .setPlatform(Platform.all())
                 .setAudience(Audience.all())
                 .setNotification(Notification.alert(pushBean.getAlert()))
-                .setNotification(Notification.ios_set_badge(0))
                 .build());
     }
 
