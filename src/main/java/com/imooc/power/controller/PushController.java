@@ -1,23 +1,17 @@
 package com.imooc.power.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.google.common.collect.Maps;
-import com.imooc.power.annotation.PassToken;
 import com.imooc.power.annotation.UserLoginToken;
-import com.imooc.power.command.UserCommand;
 import com.imooc.power.entity.PushBean;
-import com.imooc.power.entity.User;
-import com.imooc.power.service.IUserService;
 import com.imooc.power.service.JiGuangPushService;
-import com.imooc.power.util.TokenUtil;
-import io.swagger.annotations.*;
-import org.apache.commons.lang3.StringUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户管理 Controller
@@ -46,14 +40,19 @@ public class PushController {
     @ApiOperation(value = "推送", notes = "消息推送")
     @ApiResponse(response = JSONObject.class, code = 200, message = "接口返回对象参数")
     public JSONObject pushAll(@RequestParam String title, @RequestParam String content) {
-        PushBean pushBean = new PushBean();
-        pushBean.setTitle(title);
-        pushBean.setAlert(content);
-        jiGuangPushService.pushAll(pushBean);
-
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", 200);
-        jsonObject.put("status", true);
+        try {
+            PushBean pushBean = new PushBean();
+            pushBean.setTitle(title);
+            pushBean.setAlert(content);
+            jiGuangPushService.pushAll(pushBean);
+            jsonObject.put("code", 200);
+            jsonObject.put("status", true);
+        } catch (Exception e) {
+            jsonObject.put("code", 404);
+            jsonObject.put("status", false);
+        }
+
         return jsonObject;
     }
 

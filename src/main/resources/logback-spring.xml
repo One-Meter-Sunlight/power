@@ -69,9 +69,9 @@
 		表示当前logger的appender-ref和rootLogger的appender-ref都有效
     -->
     <!-- app logger -->
-    <logger name="com.immoc.power" level="debug"/>
+    <logger name="com.immoc.power" level="info"/>
     <!-- Spring framework logger -->
-    <logger name="org.springframework" level="debug" additivity="false"></logger>
+    <logger name="org.springframework" level="info" additivity="false"></logger>
 
     <!--
         root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
