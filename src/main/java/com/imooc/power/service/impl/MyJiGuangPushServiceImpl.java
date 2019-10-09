@@ -3,6 +3,7 @@ package com.imooc.power.service.impl;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -37,6 +38,10 @@ public class MyJiGuangPushServiceImpl implements MyJiGuangPushService {
         return sendPush(PushPayload.newBuilder()
                 .setPlatform(Platform.all())
                 .setAudience(Audience.all())
+                .setOptions(Options.newBuilder()
+                        .setApnsProduction(true)
+                        .setTimeToLive(90)
+                        .build())
                 .setNotification(Notification.alert(pushBean.getAlert()))
                 .build());
     }
